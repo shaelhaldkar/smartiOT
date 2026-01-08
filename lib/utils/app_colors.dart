@@ -40,8 +40,16 @@ class App_colors{
   static const Color subTextWhite = Color(0xB3FFFFFF);    // 70%
   static const Color dashedWhite = Color(0x3DFFFFFF);    // 24%
 
+  //auth
+  static const Color login_bg = Color(0xFFFFFFFF);
+  static const Color login_border = Color(0xFFE0E0E0);
+  static const Color login_hint = Color(0xFF9E9E9E);
 
+  static const Color primary_blue = Color(0xFF4A90E2);
+  static const Color button_disabled = Color(0xFFBFD7F2);
 
-
+  static const Color text_primary = Color(0xFF1A1A1A);
+  static const Color text_secondary = Color(0xFF7A7A7A);
+  static const Color logout_red = Color(0xFFE53935);
 
 }
