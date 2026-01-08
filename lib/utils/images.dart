@@ -32,4 +32,7 @@ class Images {
   static String ic_red= "assets/icons/red_tick.png";
   static String ic_light_green= "assets/icons/light_green.png";
   static String ic_download= "assets/icons/download.png";
+  ///
+  static String ic_google= "assets/icons/google.png";
+  static String ic_logout ="assets/icons/logout.png";
 }
