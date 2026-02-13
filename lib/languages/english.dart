@@ -290,5 +290,28 @@ class English {
     "pucc_status": "PUCC Status",
     "fitness_status": "Fitness Status",
     "registeredat": "Registered At",
+    //auth
+    "login": "Log In",
+    "india": "India",
+    "enter_account": "Please enter your account",
+    "password": "Password",
+    "login_btn": "Log In",
+    "forgot_password": "Forgot Password?",
+    "google_signin": "Continue with Google",
+    "welcome_home": "Welcome Home",
+    "agree_privacy_text":
+    "I agree to the Privacy Policy, User Agreement and Children’s Privacy Statement",
+    "forget_password": "Forgot Password",
+    "reset_email_info": "Enter your registered email to receive a password reset link",
+    "email_hint": "Enter your email",
+    "send_reset_link": "Send Reset Link",
+    "email_required": "Email is required",
+    "reset_email_sent": "Password reset email sent. Check your inbox.",
+    "success": "Success",
+    "something_went_wrong": "Something went wrong",
+    "logout": "Logout",
+    "logout_confirm": "Are you sure you want to logout?",
+    "cancel": "Cancel",
+    "logout_failed": "Logout failed",
   };
 }
