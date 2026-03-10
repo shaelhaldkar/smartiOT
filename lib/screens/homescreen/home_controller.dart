@@ -22,6 +22,7 @@ class HomeController extends GetxController with WidgetsBindingObserver {
   final RxBool valuesecond = true.obs;
   final RxBool activeConnection = false.obs;
 
+
   var errorString = "".obs;
   var alexaurl = "";
 
@@ -57,6 +58,22 @@ class HomeController extends GetxController with WidgetsBindingObserver {
   @override
   Future<void> onInit() async {
     super.onInit();
+
+    deviceList.addAll([
+      {
+        "device": "Smart Plug",
+        "icon": "smartplug"
+      },
+      {
+        "device": "Neon LED",
+        "icon": "neon"
+      },
+      {
+        "device": "Neon LED",
+        "icon": "neon"
+      },
+    ]);
+
     WidgetsBinding.instance.addObserver(this);
     locationR = loc.Location();
 

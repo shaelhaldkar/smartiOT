@@ -9,9 +9,7 @@ import '../../utils/helpers.dart';
 import '../../utils/images.dart';
 import 'home_controller.dart';
 
-
 class HomeScreen extends GetView<HomeController> {
-
 
   @override
   Widget build(BuildContext context) {
@@ -19,42 +17,79 @@ class HomeScreen extends GetView<HomeController> {
       child: Sizer(builder: (context, orientation, deviceType) {
         return Scaffold(
           key: controller.scaffoldKey,
-          extendBodyBehindAppBar: true,
-          backgroundColor: Colors.red,
-          appBar: AppBar(
-            backgroundColor: Colors.grey,
-           /* leading: IconButton(
-              icon: Icon(Icons.menu, color: Colors.white, size: 3.h),
-              onPressed: () => controller.scaffoldKey.currentState!.openDrawer(),
-            ),*/
-            actions: [
-           //   if (Platform.isAndroid)
-                IconButton(
-                    onPressed: () => controller.navigateToAddDevice(),
-                    icon: Icon(Icons.add, color: Colors.white),),
-            ],
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(1),
-              child: Padding(
-                padding: EdgeInsets.only(left: 2.h, right: 2.h),
-                child: Divider(
-                  height: 1.h,
-                  color: Colors.white54,
-                ),
-              ),
+          backgroundColor: App_colors.primaryHeader,
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButton: Padding(
+            padding: EdgeInsets.only(bottom: 6.h),
+            child: FloatingActionButton(
+              backgroundColor: App_colors.floatingButton,
+              onPressed: () => controller.navigateToAddDevice(),
+              child: Icon(Icons.add,color: App_colors.txtwhite),
             ),
           ),
+
           body: WillPopScope(
             onWillPop: () => Helpers.showExitDialog(context),
-            child: SingleChildScrollView(
-              child: Container(
-                height: 100.h,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: App_colors.gradient_bg_grey
+            child: Column(
+              children: [
+                Container(
+                  height: 10.h,
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal:4.w),
+                  decoration: BoxDecoration(
+                    color: App_colors.primaryHeader,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            height:5.h,
+                            width:5.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: App_colors.bg_black,
+                            ),
+                          ),
+
+                          SizedBox(width:4.w),
+                          Text(
+                            "welcome_mady".tr,
+                            style: TextStyle(
+                              color: App_colors.txtwhite,
+                              fontSize:16.sp,
+                              fontWeight: FontWeight.w600,
+                              fontFamily:'poppins',
+                            ),
+                          ),
+
+                        ],
+                      ),
+                      IconButton(
+                        onPressed: () => controller.handleRefresh(),
+                        icon: Icon(Icons.refresh,color: App_colors.txtwhite),
+                      )
+                    ],
+                  ),
                 ),
-                child: _buildDeviceList(),
-              ),
+
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 1.h),
+                    width: double.infinity,
+                    padding: EdgeInsets.only(top:3.h,left:4.w,right:4.w),
+                    decoration: BoxDecoration(
+                      color: App_colors.pageBackground,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      ),
+                    ),
+                    child: _buildDeviceList(),
+                  ),
+                ),
+              ],
             ),
           ),
         );
@@ -62,138 +97,99 @@ class HomeScreen extends GetView<HomeController> {
     );
   }
 
-
-
-
   Widget _buildDeviceList() {
     return Obx(() {
       if (controller.isLoading.value) {
         return Center(child: CircularProgressIndicator());
-      } else if (controller.deviceList.isEmpty) {
-        return _buildNoDeviceView();
       } else {
         return _buildDeviceGridView();
       }
     });
   }
 
-  Widget _buildNoDeviceView() {
-    return Container(
-      height: 100.h,
-      color: Colors.transparent,
-      child: Padding(
-        padding: EdgeInsets.only(bottom: 20.h),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(Images.ASSEST_ADDFILE_IMAGE,
-                height: 10.h),
-            ElevatedButton(
-             onPressed: () =>
-                  controller.navigateToAddDevice(),
-              style: ElevatedButton.styleFrom(
-                elevation: 1.h,
-                shape: new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(12),
-                ),
-                backgroundColor: Color(0xffFFD700),
-              ),
-              child: Text(
-                'addevice'.tr,
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontFamily: 'poppins',
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildDeviceGridView() {
     return LiquidPullToRefresh(
-      key:controller.refreshIndicatorKey,
+      key: controller.refreshIndicatorKey,
       color: Colors.transparent,
       showChildOpacityTransition: false,
       onRefresh: () => controller.handleRefresh(),
-      child: Column(
-        children: [
-          Flexible(
-            flex: 1,
-            child: Padding(
-              padding: EdgeInsets.all(8.h),
-              child: GridView.builder(
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 12.0),
-                itemCount: controller.deviceList.length,
-                itemBuilder: (context, index) {
-                  final device = controller.deviceList[index];
-                  return _buildDeviceItem(device);
-                },
-              ),
-            ),
-          ),
-        //  if (Platform.isAndroid)
-            Padding(
-              padding: EdgeInsets.only(left: 8.h, right: 8.h),
-              child: ElevatedButton(
-                child: Text(
-                  'addnwdevice'.tr,
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontFamily: 'sf',
-                      color: Colors.white),
-                ),
-                style: ElevatedButton.styleFrom(
-                  elevation: 1.h,
-                  fixedSize: Size(100.w, 5.5.h),
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(5.h),
-                  ),
-                  backgroundColor: Color(0xff304B5E),
-                ),
-                onPressed: () => controller.navigateToAddDevice(),
-              ),
-            ),
-        ],
+      child: GridView.builder(
+        itemCount: controller.deviceList.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount:2,
+          crossAxisSpacing:4.w,
+          mainAxisSpacing:3.h,
+          childAspectRatio:1.1,
+        ),
+        itemBuilder:(context,index){
+          final device = controller.deviceList[index];
+          return _buildDeviceItem(device);
+        },
       ),
     );
   }
 
   Widget _buildDeviceItem(dynamic device) {
+    bool isNeon = device['device'].toString().toLowerCase().contains('neon');
     return Stack(
       children: [
         InkWell(
           onTap: () {
-           // Get.to(() => HomeDeviceDetails(device.id, device.device, device));
+            // Get.to(() => HomeDeviceDetails(device.id, device.device, device));
           },
           child: Container(
             width: 100.h,
             decoration: BoxDecoration(
-              color: Color(0xff304B5E),
-              borderRadius: BorderRadius.circular(1.h),
+              color: App_colors.cardBackground,
+              borderRadius: BorderRadius.circular(3.h),
+              border: Border.all(
+                color: App_colors.cardBorder,
+                width: 0.4,
+              ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset(
-                  controller.assetsimg(device['icon']),
-                  height: 8.h,
-                  width: 8.w,
-                  color: Colors.white,
+                isNeon
+                    ? Container(
+                  height:8.h,
+                  width:8.h,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: App_colors.neonGradient,
+                  ),
+                  child: Center(
+                    child: Container(
+                      height:7.h,
+                      width:7.h,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: App_colors.neonInnerCircle,
+                      ),
+                    ),
+                  ),
+                )
+                    : Container(
+                  height:8.h,
+                  width:8.h,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: App_colors.iconCircleBg,
+                  ),
+                  child: Icon(
+                    Icons.power,
+                    size: 40,
+                    color: App_colors.bg_black,
+                  ),
                 ),
+
                 Padding(
-                  padding: const EdgeInsets.only(top: 5.0,left: 5.0,right: 5.0),
+                  padding: const EdgeInsets.only(top:20.0),
                   child: Text(
                     '${device['device']}',
                     style: TextStyle(
-                        color: Colors.white70,
+                        color: App_colors.text_primary,
                         fontWeight: FontWeight.w600,
                         fontFamily: 'poppins',
                         fontSize: 14),
@@ -210,7 +206,7 @@ class HomeScreen extends GetView<HomeController> {
     );
   }
 
- /*
+/*
   void _showEditDeviceDialog(dynamic device) {
     controller.first.text = device['device']!;
     Get.dialog(
@@ -272,6 +268,4 @@ class HomeScreen extends GetView<HomeController> {
       ),
     );
   }*/
-
-
 }
