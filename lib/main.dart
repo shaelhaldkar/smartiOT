@@ -16,12 +16,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.black, // Or your app's background color
+      ),
       debugShowCheckedModeBanner: false,
       translations: Messages(),
       locale: const Locale('en', 'US'),
       fallbackLocale: const Locale('en', 'US'),
-      initialRoute: '/login_screen',
+      initialRoute: '/home_screen',
       getPages: AppRoutes.routes,
+
     );
   }
 }

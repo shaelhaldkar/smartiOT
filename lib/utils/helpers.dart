@@ -1,6 +1,7 @@
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -42,7 +43,54 @@ class Helpers {
       return 'http://' + url;
     }
   }
-
+  static Future<bool> showExitDialog(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.grey.shade400,
+        title: Text(
+          'Are you sure?',
+          style: TextStyle(
+            color: Colors.black87,
+            fontFamily: 'sf',
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        content: Text(
+          'Do you want to exit this App',
+          style: TextStyle(
+            color: Colors.black87,
+            fontFamily: 'poppins',
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(
+              'No',
+              style: TextStyle(
+                color: Colors.black87,
+                fontFamily: 'poppins',
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () => SystemNavigator.pop(),
+            child: Text(
+              'Yes',
+              style: TextStyle(
+                color: Colors.black87,
+                fontFamily: 'poppins',
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
   static Future<void> signout() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.clear();
