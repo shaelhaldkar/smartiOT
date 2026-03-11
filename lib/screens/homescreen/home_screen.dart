@@ -130,7 +130,7 @@ class HomeScreen extends GetView<HomeController> {
   }
 
   Widget _buildDeviceItem(dynamic device) {
-    bool isNeon = device['device'].toString().toLowerCase().contains('neon');
+    bool isNeon = controller.isNeonDevice(device);
     return Stack(
       children: [
         InkWell(

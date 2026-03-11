@@ -74,6 +74,8 @@ class HomeController extends GetxController with WidgetsBindingObserver {
       },
     ]);
 
+
+
     WidgetsBinding.instance.addObserver(this);
     locationR = loc.Location();
 
@@ -114,6 +116,12 @@ class HomeController extends GetxController with WidgetsBindingObserver {
     log("+++didChangeAppLifecycleState ${state.name}");
   }
 
+  bool isNeonDevice(dynamic device) {
+    return device['device']
+        .toString()
+        .toLowerCase()
+        .contains('neon');
+  }
 
   Future<void> requestLocationPermission() async {
     final serviceStatusLocation = await Permission.locationWhenInUse.isGranted;
