@@ -1,44 +1,27 @@
 {
   "project_info": {
-    "project_number": "525384364296",
-    "project_id": "smartiot-3e014",
-    "storage_bucket": "smartiot-3e014.firebasestorage.app"
+    "project_number": "436249658127",
+    "firebase_url": "https://vara-da4bb-default-rtdb.firebaseio.com",
+    "project_id": "vara-da4bb",
+    "storage_bucket": "vara-da4bb.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:525384364296:android:631543ed44fb0476e7bcbd",
+        "mobilesdk_app_id": "1:436249658127:android:addc3fa107a7f082aef47a",
         "android_client_info": {
-          "package_name": "com.example.smart_device"
+          "package_name": "com.smart.device"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "525384364296-ctld8qsq76d1okp0qj8s6nlcik5ommp0.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.smart_device",
-            "certificate_hash": "e238f4d2c7bf2bf18b9fa7f6542971b7ea8c3be4"
-          }
-        },
-        {
-          "client_id": "525384364296-kb95r6m35sim8jvgg1ne22q52biii3bp.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC4endiBVVhcTYSY6m35G_XI-gPgoMVSZg"
+          "current_key": "AIzaSyCnomnD4U1GcS3GK8J8fJFX4g_t0gSO_Hg"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "525384364296-kb95r6m35sim8jvgg1ne22q52biii3bp.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
