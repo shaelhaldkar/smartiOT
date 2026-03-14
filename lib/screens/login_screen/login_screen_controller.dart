@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../localdb/appSharedPrefre.dart';
+
 class LoginScreenController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -18,6 +20,11 @@ class LoginScreenController extends GetxController {
   RxBool isChecked = false.obs;
   RxString selectedCountry = 'India'.obs;
 
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+  }
   void openCountryPicker() {
     showCountryPicker(
       context: Get.context!,
@@ -88,9 +95,16 @@ class LoginScreenController extends GetxController {
         idToken: googleAuth.idToken,
       );
 
-      await _auth.signInWithCredential(credential);
+    var data=  await _auth.signInWithCredential(credential);
+      User? user = data.user;
+      if(user !=null) {
+        SharedPrefre.saveUserId(user.uid);
+        SharedPrefre.saveUserName(user.displayName??'');
 
-      Get.offAllNamed('/home_screen');
+        Get.offAllNamed('/home_screen');
+      }else{
+        Get.snackbar("Warning",'Could not get user details, please retry');
+      }
     } catch (e) {
       Get.snackbar("Error", e.toString());
     } finally {
