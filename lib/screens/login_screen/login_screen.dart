@@ -38,7 +38,7 @@ class LoginScreen extends GetView<LoginScreenController> {
                     ),
                     const SizedBox(height: 20),
                  //country picker
-                    GestureDetector(
+                  /*  GestureDetector(
                       onTap: controller.openCountryPicker,
                       child: AbsorbPointer(
                         child: AppTextField(
@@ -55,7 +55,7 @@ class LoginScreen extends GetView<LoginScreenController> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 12),*/
                     AppTextField(
                       hintText: "enter_account".tr,
                       style: const TextStyle(color: App_colors.text_color),

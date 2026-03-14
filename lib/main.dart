@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       translations: Messages(),
       locale: const Locale('en', 'US'),
       fallbackLocale: const Locale('en', 'US'),
-      initialRoute: '/home_screen',
+      initialRoute: '/login_screen',
       getPages: AppRoutes.routes,
 
     );

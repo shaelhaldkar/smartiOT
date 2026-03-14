@@ -10,9 +10,8 @@ class SharedPrefre{
   static String _KEY_USER_ID = "userid";
   static String _KEY_USER_LOGIN_ACCESS_TOKEN = "loginaccesstoken";
   static String _KEY_FIREBASE_TOKEN = "devicetoken";
-  static String KEY_PROFILE ="profilescreen";
-  static String KEY_USER_TYPE ="userType";
-  static const String onboardingCompletedKey = "onboardingCompleted";
+  static String KEY_PROFILE ="profiledata";
+  static String KEY_NAME="name";
 
 
 
@@ -32,6 +31,11 @@ class SharedPrefre{
     prefs.setString(_KEY_USER_ID , uid);
   }
 
+  static void saveUserName(String  uid) async{
+    final SharedPreferences prefs = await _prefs;
+    prefs.setString(KEY_NAME , uid);
+  }
+
   static void saveuserLoginAccessToken(String  loginaccToken) async{
     final SharedPreferences prefs = await _prefs;
     prefs.setString(_KEY_USER_LOGIN_ACCESS_TOKEN , loginaccToken);
@@ -41,6 +45,10 @@ class SharedPrefre{
   static Future<String> getAuthToken()async{
     final SharedPreferences prefs = await _prefs;
     return prefs.getString(_KEY_USER_LOGIN_ACCESS_TOKEN)??"";
+  }
+  static Future<String> getName()async{
+    final SharedPreferences prefs = await _prefs;
+    return prefs.getString(KEY_NAME)??"";
   }
 
 
@@ -72,26 +80,7 @@ class SharedPrefre{
   }
 
 
-  static Future<void> saveUserType(String selectedUserType) async {
 
-    final SharedPreferences prefs = await _prefs;
-    prefs.setString(KEY_USER_TYPE , selectedUserType);
-
-  }
-
-  static Future<String> getUserType()async{
-    final SharedPreferences prefs = await _prefs;
-    return prefs.getString(KEY_USER_TYPE)??"";
-  }
-  static Future<void> setOnboardingCompleted(bool value) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(onboardingCompletedKey, value);
-  }
-
-  static Future<bool> isOnboardingCompleted() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(onboardingCompletedKey) ?? false;
-  }
 
 
 }
