@@ -313,6 +313,6 @@ class English {
     "logout_confirm": "Are you sure you want to logout?",
     "cancel": "Cancel",
     "logout_failed": "Logout failed",
-    "welcome_mady":"Welcome, Mady"
+    "welcome_mady":"Welcome, "
   };
 }

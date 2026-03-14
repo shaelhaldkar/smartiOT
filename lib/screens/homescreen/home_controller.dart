@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:math' show Random;
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -12,7 +13,7 @@ import 'package:location/location.dart' as loc;
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../localdb/appSharedPrefre.dart';
-
+import '../../utils/permissionutils.dart';
 
 class HomeController extends GetxController with WidgetsBindingObserver {
   final Connectivity _connectivity = Connectivity();
@@ -21,7 +22,6 @@ class HomeController extends GetxController with WidgetsBindingObserver {
   final RxBool _isHidden = true.obs;
   final RxBool valuesecond = true.obs;
   final RxBool activeConnection = false.obs;
-
 
   var errorString = "".obs;
   var alexaurl = "";
@@ -36,45 +36,25 @@ class HomeController extends GetxController with WidgetsBindingObserver {
 
   late loc.Location locationR;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  final GlobalKey<LiquidPullToRefreshState> refreshIndicatorKey = GlobalKey<
-      LiquidPullToRefreshState>();
+  final GlobalKey<LiquidPullToRefreshState> refreshIndicatorKey =
+      GlobalKey<LiquidPullToRefreshState>();
   final formKey = GlobalKey<FormState>();
   var deviceList = [].obs;
 
   var isLoading = false.obs;
 
-  String randomString(int length) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    Random rnd = Random.secure();
-    return String.fromCharCodes(
-      Iterable.generate(
-        length,
-            (_) => chars.codeUnitAt(rnd.nextInt(chars.length)),
-      ),
-    );
-  }
-
+  Rx<String> username = "".obs;
 
   @override
   Future<void> onInit() async {
     super.onInit();
-
+    username.value = await SharedPrefre.getName();
+    log("+++username ${username.value}");
     deviceList.addAll([
-      {
-        "device": "Smart Plug",
-        "icon": "smartplug"
-      },
-      {
-        "device": "Neon LED",
-        "icon": "neon"
-      },
-      {
-        "device": "Neon LED",
-        "icon": "neon"
-      },
+      {"device": "Smart Plug", "icon": "smartplug"},
+      {"device": "Neon LED", "icon": "neon"},
+      {"device": "Neon LED", "icon": "neon"},
     ]);
-
-
 
     WidgetsBinding.instance.addObserver(this);
     locationR = loc.Location();
@@ -82,19 +62,17 @@ class HomeController extends GetxController with WidgetsBindingObserver {
     //  alexaurl =alexaurl+randomString(16);
 
     initConnectivity();
-    _connectivitySubscription =
-        _connectivity.onConnectivityChanged.listen((
-            List<ConnectivityResult> resultList) {
-          final result = resultList.isNotEmpty
-              ? resultList.first
-              : ConnectivityResult.none;
-          _updateConnectionState(result);
-        });
+    _connectivitySubscription = _connectivity.onConnectivityChanged.listen((
+      List<ConnectivityResult> resultList,
+    ) {
+      final result = resultList.isNotEmpty
+          ? resultList.first
+          : ConnectivityResult.none;
+      _updateConnectionState(result);
+    });
     // await getDeviceList();
 
     //await requestLocationPermission();
-
-
   }
 
   @override
@@ -117,10 +95,7 @@ class HomeController extends GetxController with WidgetsBindingObserver {
   }
 
   bool isNeonDevice(dynamic device) {
-    return device['device']
-        .toString()
-        .toLowerCase()
-        .contains('neon');
+    return device['device'].toString().toLowerCase().contains('neon');
   }
 
   Future<void> requestLocationPermission() async {
@@ -151,7 +126,6 @@ class HomeController extends GetxController with WidgetsBindingObserver {
     }
   }
 
-
   Future<void> initConnectivity() async {
     try {
       final resultList = await _connectivity.checkConnectivity();
@@ -170,15 +144,17 @@ class HomeController extends GetxController with WidgetsBindingObserver {
       await checkUserConnection();
     } else {
       await checkUserConnection();
-      Get.snackbar('nointernet'.tr, 'plscheckconn'.tr,
-          backgroundColor: Colors.grey);
+      Get.snackbar(
+        'nointernet'.tr,
+        'plscheckconn'.tr,
+        backgroundColor: Colors.grey,
+      );
     }
   }
 
   Future<void> logoutUser() async {
     Get.dialog(
       AlertDialog(
-
         title: Text(
           'Confirm Logout',
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -187,7 +163,6 @@ class HomeController extends GetxController with WidgetsBindingObserver {
           mainAxisSize: MainAxisSize.min,
           children: [
             /*Icon(Icons.logout, size: 48, color: Colors.red),*/
-
             Text('Are you sure you want to logout?'),
           ],
         ),
@@ -196,17 +171,11 @@ class HomeController extends GetxController with WidgetsBindingObserver {
         ),
         actions: [
           TextButton(
-            child: Text(
-              'CANCEL',
-              style: TextStyle(color: Colors.grey),
-            ),
+            child: Text('CANCEL', style: TextStyle(color: Colors.grey)),
             onPressed: () => Get.back(),
           ),
           TextButton(
-            child: Text(
-              'LOGOUT',
-              style: TextStyle(color: Colors.red),
-            ),
+            child: Text('LOGOUT', style: TextStyle(color: Colors.red)),
             onPressed: () async {
               await SharedPrefre.clearSharedPre();
 
@@ -217,7 +186,6 @@ class HomeController extends GetxController with WidgetsBindingObserver {
       ),
       barrierDismissible: true,
     );
-
 
     //  Get.offAll(() => MyHomePage());
   }
@@ -232,8 +200,17 @@ class HomeController extends GetxController with WidgetsBindingObserver {
     return 'assets/icons/about.svg';
   }
 
-  void navigateToAddDevice() {}
+  Future<void> navigateToAddDevice() async {
+    bool hasPermission =
+        await PermissionUtils.ensureLocationPermissionAndService();
 
+    if (!hasPermission) {
+      print("Please enable location permission and turn on location.");
+      return;
+    } else {
+      Get.toNamed('/smartconfigscreen');
+    }
+  }
 
   // Toggle methods
 
@@ -244,11 +221,12 @@ class HomeController extends GetxController with WidgetsBindingObserver {
     });
     return completer.future.then<void>((_) {
       // getDeviceList();
-
     });
   }
+
+  Future<void> dologout() async {
+    await FirebaseAuth.instance.signOut();
+    await SharedPrefre.clearSharedPre();
+    Get.offAllNamed('/login_screen');
+  }
 }
-
-
-
-

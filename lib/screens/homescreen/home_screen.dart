@@ -53,22 +53,24 @@ class HomeScreen extends GetView<HomeController> {
                             ),
                           ),
 
-                          SizedBox(width:4.w),
-                          Text(
-                            "welcome_mady".tr,
-                            style: TextStyle(
-                              color: App_colors.txtwhite,
-                              fontSize:16.sp,
-                              fontWeight: FontWeight.w600,
-                              fontFamily:'poppins',
+                          SizedBox(width:10),
+                          Obx(
+                            ()=> Text(
+                              "${"welcome_mady".tr}\n${controller.username.value}",
+                              style: TextStyle(
+                                color: App_colors.txtwhite,
+                                fontSize:16.sp,
+                                fontWeight: FontWeight.w600,
+                                fontFamily:'poppins',
+                              ),
                             ),
                           ),
 
                         ],
                       ),
                       IconButton(
-                        onPressed: () => controller.handleRefresh(),
-                        icon: Icon(Icons.refresh,color: App_colors.txtwhite),
+                        onPressed: () => controller.dologout(),
+                        icon: Icon(Icons.logout_rounded,color: App_colors.txtwhite),
                       )
                     ],
                   ),
@@ -110,7 +112,7 @@ class HomeScreen extends GetView<HomeController> {
   Widget _buildDeviceGridView() {
     return LiquidPullToRefresh(
       key: controller.refreshIndicatorKey,
-      color: Colors.transparent,
+      color: Colors.blue,
       showChildOpacityTransition: false,
       onRefresh: () => controller.handleRefresh(),
       child: GridView.builder(
@@ -206,66 +208,4 @@ class HomeScreen extends GetView<HomeController> {
     );
   }
 
-/*
-  void _showEditDeviceDialog(dynamic device) {
-    controller.first.text = device['device']!;
-    Get.dialog(
-      AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(1.h),
-        ),
-        title: Text(
-          'edtdevicenme'.tr,
-          style: TextStyle(fontSize: 14),
-        ),
-        content: Container(
-          decoration: BoxDecoration(
-              color: Colors.grey[200],
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(1.h)),
-          child: TextField(
-            controller: controller.first,
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.next,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.all(1.h),
-              hintText: '',
-              hintStyle: TextStyle(
-                  fontFamily: 'poppins',
-                  color: Colors.grey,
-                  fontSize: 10),
-            ),
-            style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'poppins',
-            ),
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: Text(
-              'cancel'.tr,
-              style: TextStyle(
-                  color: Colors.black87,
-                  fontFamily: 'poppins',
-                  fontWeight: FontWeight.w600),
-            ),
-          ),
-          TextButton(
-            onPressed: () => controller.handleDeviceEdit(
-                device['id'].toString(), controller.first.text),
-            child: Text(
-              'submit'.tr,
-              style: TextStyle(
-                  color: Colors.black87,
-                  fontFamily: 'poppins',
-                  fontWeight: FontWeight.w600),
-            ),
-          ),
-        ],
-      ),
-    );
-  }*/
 }
